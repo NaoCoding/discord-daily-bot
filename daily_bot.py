@@ -24,7 +24,7 @@ intents.members = True
 intents.message_content = True
 
 # Create a Discord client instance
-client = discord.Client(intents = intents)
+client = discord.Client(intents=intents)
 
 # The task that triggers daily at a specific time
 async def daily_triggered_task():
@@ -51,7 +51,7 @@ async def on_ready():
     for user in client.users:
         print(user)
     # Start the daily triggered task
-    client.loop.create_task(daily_triggered_task())
+    asyncio.create_task(daily_triggered_task())
 
 @client.event
 async def on_custom_time_event(timestamp: discord.datetime):
@@ -70,7 +70,7 @@ async def on_custom_time_event(timestamp: discord.datetime):
         if channel is not None:
             try:
                 await channel.send("It's time for your daily message!")
-            except Exception as e:
+            except (discord.Forbidden, discord.HTTPException) as e:
                 print(f"Could not send message to {channel.name} in {guild.name}: {e}")
                 
     # Wait for a specified duration to allow for replies
