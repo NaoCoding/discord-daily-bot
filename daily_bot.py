@@ -54,7 +54,7 @@ async def on_ready():
     asyncio.create_task(daily_triggered_task())
 
 @client.event
-async def on_custom_time_event(timestamp: discord.datetime):
+async def on_custom_time_event(timestamp: datetime.datetime):
     print(f"Custom time event triggered at {timestamp}")
     # Setup the reply dictionary
     global reply_dict
@@ -69,7 +69,12 @@ async def on_custom_time_event(timestamp: discord.datetime):
         channel = guild.text_channels[0] if guild.text_channels else None
         if channel is not None:
             try:
-                await channel.send("It's time for your daily message!")
+                embed = discord.Embed(
+                    title="Friendship Booster",
+                    description="It's time for your daily message!",
+                    timestamp=datetime.datetime.now()
+                )
+                await channel.send(embed=embed)
             except (discord.Forbidden, discord.HTTPException) as e:
                 print(f"Could not send message to {channel.name} in {guild.name}: {e}")
                 
@@ -83,8 +88,12 @@ async def on_custom_time_event(timestamp: discord.datetime):
                 channel = guild.text_channels[0] if guild.text_channels else None
                 if channel is not None:
                     try:
-                        await channel.send(f"{member.mention}, you missed your daily message!")
-                        await channel.send(f"You don't care about your friends!")
+                        embed = discord.Embed(
+                            title=f"You don't care about your friends!",
+                            description=f"{member.mention}, you missed your daily message!",
+                            timestamp=datetime.datetime.now()
+                        )
+                        await channel.send(embed=embed)
                     except Exception as e:
                         print(f"Could not send reminder to {member.name} in {guild.name}: {e}")
     
