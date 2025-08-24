@@ -11,9 +11,12 @@ REPLY_WITHIN = 1    # Reply within 1 hour
 reply_dict = {}
 
 # Read the bot token from a file
-token_file_path = "token.txt"
-with open(token_file_path, "r") as file:
-    token = file.read().strip()
+import os
+
+# Read the bot token from an environment variable
+token = os.environ.get("DISCORD_TOKEN")
+if not token:
+    raise RuntimeError("The DISCORD_TOKEN environment variable is not set.")
 
 # Request message content intent
 intents = discord.Intents.default()
