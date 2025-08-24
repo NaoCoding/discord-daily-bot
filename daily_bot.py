@@ -54,7 +54,7 @@ async def on_ready():
     asyncio.create_task(daily_triggered_task())
 
 @client.event
-async def on_custom_time_event(timestamp: discord.datetime):
+async def on_custom_time_event(timestamp: datetime.datetime):
     print(f"Custom time event triggered at {timestamp}")
     # Setup the reply dictionary
     global reply_dict
