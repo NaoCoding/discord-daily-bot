@@ -4,8 +4,8 @@ import asyncio
 import os
 
 ################ Configurations ################
-REPLY_HOUR = 23     # Reply at 12 PM
-REPLY_MINUTE = 59    # Reply at 0 minutes
+REPLY_HOUR = 12     # Reply at 12 PM
+REPLY_MINUTE = 0    # Reply at 0 minutes
 REPLY_WITHIN = 1    # Reply within 1 hour
 ################################################
 
@@ -81,7 +81,7 @@ async def on_custom_time_event(timestamp: datetime.datetime):
                 print(f"Could not send message to {channel.name} in {guild.name}: {e}")
                 
     # Wait for a specified duration to allow for replies
-    await asyncio.sleep(REPLY_WITHIN * 60)
+    await asyncio.sleep(REPLY_WITHIN * 3600)  # Convert hours to seconds
     
     # Check if all users have replied
     for guild in client.guilds:
