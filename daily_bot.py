@@ -1,17 +1,16 @@
 import discord
 import datetime
 import asyncio
+import os
 
 ################ Configurations ################
-REPLY_HOUR = 12     # Reply at 12 PM
-REPLY_MINUTE = 0    # Reply at 0 minutes
+REPLY_HOUR = 23     # Reply at 12 PM
+REPLY_MINUTE = 59    # Reply at 0 minutes
 REPLY_WITHIN = 1    # Reply within 1 hour
 ################################################
 
 reply_dict = {}
-
-# Read the bot token from a file
-import os
+custom_time_event_running = False
 
 # Read the bot token from an environment variable
 token = os.environ.get("DISCORD_TOKEN_DAILY_BOT")
@@ -56,6 +55,9 @@ async def on_ready():
 @client.event
 async def on_custom_time_event(timestamp: datetime.datetime):
     print(f"Custom time event triggered at {timestamp}")
+    global custom_time_event_running
+    custom_time_event_running = True
+
     # Setup the reply dictionary
     global reply_dict
     reply_dict = {}
@@ -79,7 +81,7 @@ async def on_custom_time_event(timestamp: datetime.datetime):
                 print(f"Could not send message to {channel.name} in {guild.name}: {e}")
                 
     # Wait for a specified duration to allow for replies
-    await asyncio.sleep(REPLY_WITHIN * 3600)
+    await asyncio.sleep(REPLY_WITHIN * 60)
     
     # Check if all users have replied
     for guild in client.guilds:
@@ -97,6 +99,8 @@ async def on_custom_time_event(timestamp: datetime.datetime):
                     except Exception as e:
                         print(f"Could not send reminder to {member.name} in {guild.name}: {e}")
     
+    custom_time_event_running = False
+    
 
 @client.event
 # Incoming message event
@@ -104,9 +108,27 @@ async def on_message(message):
     # Ignore messages sent by the bot itself
     if message.author == client.user:
         return
-    # Check if the message is a reply to the bot's daily message
-    if message.author.id in reply_dict:
-        reply_dict[message.author.id] = True
+    
+    # Only respond if the custom time event is running
+    if custom_time_event_running:
+        if message.author.id in reply_dict:
+            # Only respond if the user hasn't replied yet
+            if not reply_dict[message.author.id]:
+                # React with a heart emoji
+                try:
+                    await message.add_reaction("❤️")
+                except discord.HTTPException:
+                    pass
+                # Scold the user if the reply is too short
+                len_of_message = len(message.content)
+                if len_of_message < 5:
+                    try:
+                        await message.channel.send(f"{message.author.mention}, our friendship only worth {len_of_message} characters?")
+                    except discord.HTTPException:
+                        pass
+            # Mark the user as having replied
+            reply_dict[message.author.id] = True
+    
 
 @client.event
 async def on_disconnect():
