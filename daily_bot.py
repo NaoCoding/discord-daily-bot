@@ -14,7 +14,7 @@ reply_dict = {}
 import os
 
 # Read the bot token from an environment variable
-token = os.environ.get("DISCORD_TOKEN")
+token = os.environ.get("DISCORD_TOKEN_DAILY_BOT")
 if not token:
     raise RuntimeError("The DISCORD_TOKEN environment variable is not set.")
 
