@@ -3,10 +3,10 @@ import datetime
 import asyncio
 
 ################ Configurations ################
-time_diff = 8       # For GMT+8
-reply_hour = 12     # Reply at 12 PM
-reply_minute = 0    # Reply at 0 minutes
-reply_within = 1    # Reply within 1 hour
+TIME_DIFF = 8       # For GMT+8
+REPLY_HOUR = 12     # Reply at 12 PM
+REPLY_MINUTE = 0    # Reply at 0 minutes
+REPLY_WITHIN = 1    # Reply within 1 hour
 ################################################
 
 reply_dict = {}
