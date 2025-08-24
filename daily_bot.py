@@ -3,7 +3,6 @@ import datetime
 import asyncio
 
 ################ Configurations ################
-TIME_DIFF = 8       # For GMT+8
 REPLY_HOUR = 12     # Reply at 12 PM
 REPLY_MINUTE = 0    # Reply at 0 minutes
 REPLY_WITHIN = 1    # Reply within 1 hour
@@ -31,7 +30,7 @@ async def daily_triggered_task():
         
         # Calculate the next target time
         now = datetime.datetime.now()
-        target = now.replace(hour=reply_hour, minute=reply_minute, second=0, microsecond=0)
+        target = now.replace(hour=REPLY_HOUR, minute=REPLY_MINUTE, second=0, microsecond=0)
         if target <= now:
             # If we've already passed the target time today, schedule for tomorrow
             target += datetime.timedelta(days=1)
@@ -72,7 +71,7 @@ async def on_custom_time_event(timestamp: discord.datetime):
                 print(f"Could not send message to {channel.name} in {guild.name}: {e}")
                 
     # Wait for a specified duration to allow for replies
-    await asyncio.sleep(reply_within * 3600)
+    await asyncio.sleep(REPLY_WITHIN * 3600)
     
     # Check if all users have replied
     for guild in client.guilds:
