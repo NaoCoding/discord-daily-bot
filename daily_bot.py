@@ -114,20 +114,22 @@ async def on_message(message):
         if message.author.id in reply_dict:
             # Only respond if the user hasn't replied yet
             if not reply_dict[message.author.id]:
+                # Mark the user as having replied to prevent duplicate responses
+                reply_dict[message.author.id] = True
+
                 # React with a heart emoji
                 try:
                     await message.add_reaction("❤️")
-                except discord.HTTPException:
-                    pass
+                except discord.HTTPException as e:
+                    print(f"Could not add reaction for {message.author.name}: {e}")
+
                 # Scold the user if the reply is too short
                 len_of_message = len(message.content)
-                if len_of_message < 5:
+                if len_of_message < 5: # Consider making 5 a constant
                     try:
                         await message.channel.send(f"{message.author.mention}, our friendship only worth {len_of_message} characters?")
-                    except discord.HTTPException:
-                        pass
-            # Mark the user as having replied
-            reply_dict[message.author.id] = True
+                    except discord.HTTPException as e:
+                        print(f"Could not send message to {message.channel.name}: {e}")
     
 
 @client.event
