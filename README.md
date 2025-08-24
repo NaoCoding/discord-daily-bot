@@ -11,3 +11,4 @@ A Discord bot that reminds everyone in the guild to reply daily. If a member fai
 ## Requirements
 - Python 3.9+
 - Dependencies listed in `requirements.txt`
+- A Discord bot token saved in `token.txt`
