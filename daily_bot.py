@@ -1,5 +1,5 @@
 import discord
-import datetime
+from datetime import datetime, timedelta, timezone
 import asyncio
 import os
 
@@ -25,17 +25,21 @@ intents.message_content = True
 # Create a Discord client instance
 client = discord.Client(intents=intents)
 
+# Timezone setup
+utc_plus_8 = timezone(timedelta(hours=8))
+
 # The task that triggers daily at a specific time
 async def daily_triggered_task():
     await client.wait_until_ready()
     while not client.is_closed():
         
         # Calculate the next target time
-        now = datetime.datetime.now()
+        now_utc = datetime.now(timezone.utc)
+        now = now_utc.astimezone(utc_plus_8)
         target = now.replace(hour=REPLY_HOUR, minute=REPLY_MINUTE, second=0, microsecond=0)
         if target <= now:
             # If we've already passed the target time today, schedule for tomorrow
-            target += datetime.timedelta(days=1)
+            target += timedelta(days=1)
 
         wait_time = (target - now).total_seconds()
         await asyncio.sleep(wait_time)
@@ -53,7 +57,7 @@ async def on_ready():
     asyncio.create_task(daily_triggered_task())
 
 @client.event
-async def on_custom_time_event(timestamp: datetime.datetime):
+async def on_custom_time_event(timestamp: datetime):
     print(f"Custom time event triggered at {timestamp}")
     global custom_time_event_running
     custom_time_event_running = True
@@ -74,7 +78,7 @@ async def on_custom_time_event(timestamp: datetime.datetime):
                 embed = discord.Embed(
                     title="Friendship Booster",
                     description="It's time for your daily message!",
-                    timestamp=datetime.datetime.now()
+                    timestamp=datetime.now()
                 )
                 await channel.send(embed=embed)
             except (discord.Forbidden, discord.HTTPException) as e:
@@ -93,7 +97,7 @@ async def on_custom_time_event(timestamp: datetime.datetime):
                         embed = discord.Embed(
                             title=f"You don't care about your friends!",
                             description=f"{member.mention}, you missed your daily message!",
-                            timestamp=datetime.datetime.now()
+                            timestamp=datetime.now()
                         )
                         await channel.send(embed=embed)
                     except Exception as e:
