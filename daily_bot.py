@@ -97,7 +97,7 @@ async def on_custom_time_event(timestamp: datetime):
                         embed = discord.Embed(
                             title=f"You don't care about your friends!",
                             description=f"{member.mention}, you missed your daily message!",
-                            timestamp=datetime.now()
+                            timestamp=datetime.now(utc_plus_8)
                         )
                         await channel.send(embed=embed)
                     except Exception as e:
