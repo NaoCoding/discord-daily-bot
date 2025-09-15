@@ -26,7 +26,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 # Timezone setup
-utc_plus_8 = timezone(timedelta(hours=8))
+UTC_PLUS_8 = timezone(timedelta(hours=8))
 
 # The task that triggers daily at a specific time
 async def daily_triggered_task():
@@ -35,7 +35,7 @@ async def daily_triggered_task():
         
         # Calculate the next target time
         now_utc = datetime.now(timezone.utc)
-        now = now_utc.astimezone(utc_plus_8)
+        now = now_utc.astimezone(UTC_PLUS_8)
         target = now.replace(hour=REPLY_HOUR, minute=REPLY_MINUTE, second=0, microsecond=0)
         if target <= now:
             # If we've already passed the target time today, schedule for tomorrow
@@ -78,7 +78,7 @@ async def on_custom_time_event(timestamp: datetime):
                 embed = discord.Embed(
                     title="Friendship Booster",
                     description="It's time for your daily message!",
-                    timestamp=datetime.now()
+                    timestamp=datetime.now(UTC_PLUS_8)
                 )
                 await channel.send(embed=embed)
             except (discord.Forbidden, discord.HTTPException) as e:
@@ -97,7 +97,7 @@ async def on_custom_time_event(timestamp: datetime):
                         embed = discord.Embed(
                             title=f"You don't care about your friends!",
                             description=f"{member.mention}, you missed your daily message!",
-                            timestamp=datetime.now(utc_plus_8)
+                            timestamp=datetime.now(UTC_PLUS_8)
                         )
                         await channel.send(embed=embed)
                     except Exception as e:
