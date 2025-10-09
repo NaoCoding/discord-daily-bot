@@ -55,6 +55,8 @@ def friendship_judge(user_input: str, difficulty:int) -> tuple[bool,str]:
             response = response[4:].strip()
         elif response.lower().startswith("yes"):
             response = response[3:].strip()
+        else:
+            passed = False
         
     elif 'no' in response.lower():
         passed = False
