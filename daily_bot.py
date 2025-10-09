@@ -135,7 +135,7 @@ async def on_message(message):
                     print(f"Could not add reaction for {message.author.name}: {e}")
 
                 if client.config["use_gemini_api"]:
-                    passed, response = gemini.FriendshipJudge(message.content, client.config["gemini_difficulty"])
+                    passed, response = gemini.friendship_judge(message.content, client.config["gemini_difficulty"])
                     if not passed:
                         try:
                             await message.channel.send(f"{message.author.mention}\n{response}")
