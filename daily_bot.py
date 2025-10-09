@@ -1,5 +1,4 @@
 import discord
-from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 import asyncio
 import os
@@ -8,8 +7,8 @@ import gemini
 
 ################ Configurations ################
 config = {
-    "reply_hour": 11,
-    "reply_minute": 39,
+    "reply_hour": 12,
+    "reply_minute": 0,
     "reply_within": 3600,  # in seconds
     "use_gemini_api": True,
     "gemini_difficulty": 1
