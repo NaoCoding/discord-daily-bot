@@ -16,7 +16,7 @@ def call_gemini(input_text: str, model:str="gemini-2.5-flash-lite", thinking_bud
 
     return response.text
 
-def FriendshipJudge(user_input: str, difficulty:int) -> tuple[bool,str]:
+def friendship_judge(user_input: str, difficulty:int) -> tuple[bool,str]:
     # Prompt for checking the response if the user is willing to connect with others
     judge = "You are a friendship booster to judge whether the user is willing to connect with others. Answer with a simple 'yes' or 'no'. and response to the user in 20 words in a humorous way.\n"
     
