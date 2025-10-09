@@ -13,5 +13,6 @@ A Discord bot that reminds everyone in the guild to reply daily. If a member fai
 - Python 3.9+
 - Dependencies listed in `requirements.txt`
 - A Discord bot token saved in env variable DISCORD_TOKEN_DAILY_BOT
+- A Gemini API token saved in env variable GEMINI_API_KEY
 - Gemini API https://ai.google.dev/gemini-api/docs?hl=zh-tw
-    install command: 
+    install command: pip install google-genai
