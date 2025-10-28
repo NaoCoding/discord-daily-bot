@@ -6,9 +6,13 @@ A Discord bot that reminds everyone in the guild to reply daily. If a member fai
 - ✅ The bot automatically posts “It’s time for your daily message!” once a day.
 - ✅ The bot automatically keeps track of everyone who replies.
 - ✅ If someone doesn’t reply in the channel, the bot will tag them and give them a playful scolding.
+- ✅ Response judged by Gemini.
 
 
 ## Requirements
 - Python 3.9+
 - Dependencies listed in `requirements.txt`
 - A Discord bot token saved in env variable DISCORD_TOKEN_DAILY_BOT
+- A Gemini API token saved in env variable GEMINI_API_KEY
+- Gemini API https://ai.google.dev/gemini-api/docs?hl=zh-tw
+    install command: pip install google-genai
